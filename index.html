@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yiyuan Secondhand · A new secondhand trading community</title>
+  <meta name="description" content="Yiyuan is a secondhand trading community on Telegram. Listing review, BNB Chain USDT escrow, logistics checks, reviews, and disputes — all inside the bot.">
+  <meta name="theme-color" content="#FFF8E4">
+  <meta property="og:title" content="Yiyuan Secondhand">
+  <meta property="og:description" content="A new secondhand trading community. Buy, sell, escrow, and settle after-sales in Telegram.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="https://raw.githubusercontent.com/usooc/test/main/yyrs.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fffdf6;
+      --bg-deep: #fff6d8;
+      --paper: #ffffff;
+      --ink: #2b2518;
+      --muted: #6f6553;
+      --line: #ead9a4;
+      --gold: #e2b63a;
+      --gold-deep: #c49214;
+      --yellow: #f6d35b;
+      --yellow-soft: #ffe9a3;
+      --shadow: 0 18px 50px rgba(90, 70, 20, 0.08);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 520px at 88% -8%, #ffe9a8 0%, transparent 58%),
+        radial-gradient(900px 480px at -10% 18%, #fff3c6 0%, transparent 55%),
+        var(--bg);
+      line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; }
+
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(255, 253, 246, 0.82);
+      border-bottom: 1px solid rgba(226, 182, 58, 0.18);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: "Noto Serif SC", serif;
+      font-weight: 700;
+      font-size: 20px;
+      letter-spacing: 0.04em;
+    }
+    .mark {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      background: transparent;
+    }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .lang-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      flex-shrink: 0;
+    }
+    .lang-switch button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .lang-switch button.active {
+      background: var(--yellow);
+      color: var(--ink);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-gold {
+      background: linear-gradient(180deg, #f7d76a, #e8b83a);
+      color: #2a2416;
+      box-shadow: 0 10px 24px rgba(201, 150, 20, 0.22);
+    }
+    .btn-ghost {
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+    .menu-btn {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 56px;
+      align-items: center;
+      padding: 72px 0 48px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #fff8df;
+      border: 1px solid var(--line);
+      color: #8a6a16;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(40px, 6vw, 68px);
+      line-height: 1.12;
+      letter-spacing: 0.02em;
+      margin-bottom: 18px;
+    }
+    .lead {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 28px;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .meta b { display: block; color: var(--ink); font-size: 15px; }
+
+    .hero-logo {
+      width: min(420px, 100%);
+      margin-left: auto;
+      display: grid;
+      place-items: center;
+    }
+    .hero-logo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 8px 0 64px;
+    }
+    .strip article {
+      background: rgba(255,255,255,.72);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+    }
+    .strip h3 { font-size: 15px; margin-bottom: 4px; }
+    .strip p { color: var(--muted); font-size: 13px; }
+
+    section { padding: 28px 0 72px; }
+    .section-kicker {
+      color: var(--gold-deep);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-family: "Noto Serif SC", serif;
+      font-size: clamp(28px, 4vw, 40px);
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    .section-lead { color: var(--muted); max-width: 640px; margin-bottom: 28px; }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(90, 70, 20, 0.04);
+    }
+    .card.tint { background: linear-gradient(180deg, #fffaf0, #fff3cc); }
+    .card h3 { font-size: 22px; font-family: "Noto Serif SC", serif; margin: 10px 0 8px; }
+    .card p { color: var(--muted); }
+    .icon {
+      width: 44px; height: 44px; border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+      display: grid; place-items: center;
+      font-size: 20px;
+    }
+    .stack { display: grid; gap: 16px; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .step {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px 16px;
+      min-height: 190px;
+    }
+    .num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--yellow);
+      display: grid; place-items: center;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-size: 16px; margin-bottom: 8px; }
+    .step p { font-size: 13px; color: var(--muted); }
+
+    .cta {
+      background: linear-gradient(135deg, #fff4c4 0%, #ffe58a 52%, #f6d35b 100%);
+      border: 1px solid #efd06a;
+      border-radius: 32px;
+      padding: 42px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+    .cta h2 { margin-bottom: 8px; }
+    .cta p { color: #5d4f2c; max-width: 520px; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+    .mail {
+      font-family: "Noto Serif SC", serif;
+      font-size: 28px;
+      margin: 8px 0 6px;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 40px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 72px; left: 20px; right: 20px;
+        background: #fffdf8;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: var(--shadow);
+      }
+      .menu-btn { display: grid; place-items: center; }
+      .hero, .features, .contact-grid, .cta { grid-template-columns: 1fr; }
+      .strip, .steps { grid-template-columns: 1fr 1fr; }
+      .hero-logo { margin: 0 auto; }
+      .cta { padding: 28px 22px; }
+      .hero { padding-top: 36px; }
+    }
+    @media (max-width: 560px) {
+      .strip, .steps { grid-template-columns: 1fr; }
+      .wrap { width: min(1120px, calc(100% - 28px)); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#top">
+        <img class="mark" src="https://raw.githubusercontent.com/usooc/test/main/yyrs.png" alt="">
+        一元二手
+      </a>
+      <div class="nav-right">
+        <nav class="nav-links" id="nav-links">
+          <a href="#features" data-i18n="nav.features">Features</a>
+          <a href="#flow" data-i18n="nav.flow">How it works</a>
+          <a href="#contact" data-i18n="nav.contact">Contact</a>
+          <a class="btn btn-gold" href="https://t.me/yyrsbot" target="_blank" rel="noopener" data-i18n="nav.open">Open the bot</a>
+        </nav>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" class="active">EN</button>
+          <button type="button" data-lang="zh">中文</button>
+        </div>
+        <button class="menu-btn" type="button" data-i18n-aria="nav.menu" aria-label="Open menu" onclick="document.getElementById('nav-links').classList.toggle('open')">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <div class="eyebrow" data-i18n="hero.eyebrow">Telegram secondhand marketplace</div>
+        <h1 data-i18n-html="hero.title">Welcome to<br>Yiyuan</h1>
+        <p class="lead" data-i18n="hero.lead">A new secondhand trading community. List, search, order, escrow, shipping checks, reviews, and disputes — all inside the bot.</p>
+        <div class="hero-actions">
+          <a class="btn btn-gold" href="https://t.me/yyrsbot" target="_blank" rel="noopener" data-i18n="hero.cta">Open @yyrsbot</a>
+          <a class="btn btn-ghost" href="#flow" data-i18n="hero.secondary">See how a trade works</a>
+        </div>
+        <div class="meta">
+          <div><b>BNB Chain USDT</b><span data-i18n="hero.meta1">BEP-20 escrow payments</span></div>
+          <div><b data-i18n="hero.meta2t">Physical / digital goods</b><span data-i18n="hero.meta2">Listed after review</span></div>
+          <div><b data-i18n="hero.meta3t">Global logistics checks</b><span data-i18n="hero.meta3">Tracking verification for physical orders</span></div>
+        </div>
+      </div>
+      <div class="hero-logo">
+        <img src="https://raw.githubusercontent.com/usooc/test/main/yyrs.png" alt="一元二手">
+      </div>
+    </div>
+
+    <div class="wrap strip">
+      <article><h3 data-i18n="strip.buy.t">Buyer hub</h3><p data-i18n="strip.buy.p">Search, purchases, incoming, favorites, and complaints.</p></article>
+      <article><h3 data-i18n="strip.sale.t">Seller hub</h3><p data-i18n="strip.sale.p">Listings, drafts, to-ship, sold, and disputes.</p></article>
+      <article><h3 data-i18n="strip.self.t">Profile</h3><p data-i18n="strip.self.p">Homepage, shipping address, and USDT payout address.</p></article>
+      <article><h3 data-i18n="strip.help.t">Help</h3><p data-i18n="strip.help.p">Rules and platform guides, anytime.</p></article>
+    </div>
+
+    <section id="features">
+      <div class="wrap">
+        <p class="section-kicker">PLATFORM</p>
+        <h2 data-i18n="feat.title">Buy and sell in Telegram</h2>
+        <p class="section-lead" data-i18n="feat.lead">No extra app. Join the required channels, then use buyer, seller, and profile tools. Browse by site or search all listings.</p>
+        <div class="features">
+          <article class="card tint">
+            <div class="icon">🏷</div>
+            <h3 data-i18n="feat.1.t">Reviewed before it goes live</h3>
+            <p data-i18n="feat.1.p">Physical and digital goods. Sellers add title, price, stock, description, and media; physical items also need condition. Listings appear on the matching site only after review.</p>
+          </article>
+          <div class="stack">
+            <article class="card">
+              <div class="icon">💸</div>
+              <h3 data-i18n="feat.2.t">One-time address escrow</h3>
+              <p data-i18n="feat.2.p">Pay the exact USDT amount to the BSC address shown on the order. Funds are held and released by order status; settlement and refunds wait for on-chain confirmation.</p>
+            </article>
+            <article class="card">
+              <div class="icon">📦</div>
+              <h3 data-i18n="feat.3.t">Shipping and logistics checks</h3>
+              <p data-i18n="feat.3.p">Physical orders verify real carrier tracking and destination before shipping proof unlocks. Digital goods are delivered as agreed, with no logistics.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="wrap">
+        <p class="section-kicker">HOW IT WORKS</p>
+        <h2 data-i18n="flow.title">How a trade is completed</h2>
+        <p class="section-lead" data-i18n="flow.lead">From browsing to reviews, the steps are fixed and visible. Off-platform address or amount changes are not covered.</p>
+        <div class="steps">
+          <article class="step"><div class="num">1</div><h3 data-i18n="flow.1.t">Browse / list</h3><p data-i18n="flow.1.p">Search by site or across the market; sellers submit items for review.</p></article>
+          <article class="step"><div class="num">2</div><h3 data-i18n="flow.2.t">Order & escrow</h3><p data-i18n="flow.2.p">A one-time address is created; pay the shown BNB Chain USDT amount.</p></article>
+          <article class="step"><div class="num">3</div><h3 data-i18n="flow.3.t">Ship & verify</h3><p data-i18n="flow.3.p">Sellers ship on time and upload proof; physical orders get tracking checks.</p></article>
+          <article class="step"><div class="num">4</div><h3 data-i18n="flow.4.t">Confirm receipt</h3><p data-i18n="flow.4.p">Buyer confirmation pays the seller; overdue receipt follows platform rules.</p></article>
+          <article class="step"><div class="num">5</div><h3 data-i18n="flow.5.t">Reviews / disputes</h3><p data-i18n="flow.5.p">Both sides review; disputes need evidence within the deadline and are decided by the rules.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="cta">
+          <div>
+            <h2 data-i18n="cta.title">Open the bot now</h2>
+            <p data-i18n="cta.p">Search on Telegram or tap the button to start trading with the official Yiyuan bot.</p>
+          </div>
+          <a class="btn btn-ghost" href="https://t.me/yyrsbot" target="_blank" rel="noopener">https://t.me/yyrsbot</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <p class="section-kicker">CONTACT</p>
+        <h2 data-i18n="contact.title">Get in touch</h2>
+        <div class="contact-grid">
+          <article class="card">
+            <p data-i18n="contact.email">Official email</p>
+            <p class="mail"><a href="mailto:official@yyrs.uk">official@yyrs.uk</a></p>
+            <p style="color:var(--muted)" data-i18n="contact.email.p">This is the platform’s official email. Do not trust anyone claiming to be support who asks for seed phrases, private keys, or off-platform payments.</p>
+          </article>
+          <article class="card tint">
+            <p data-i18n="contact.bot">Official bot</p>
+            <p class="mail"><a href="https://t.me/yyrsbot" target="_blank" rel="noopener">@yyrsbot</a></p>
+            <p style="color:var(--muted)"><span data-i18n="contact.bot.p">The only official entry:</span> <a href="https://t.me/yyrsbot" target="_blank" rel="noopener">https://t.me/yyrsbot</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>© 2026 一元二手 · <a href="mailto:official@yyrs.uk">official@yyrs.uk</a></div>
+      <div data-i18n="footer.note">Funds and after-sales follow the published platform rules. Keep copies of important confirmations.</div>
+    </div>
+  </footer>
+
+  <script>
+    const I18N = {
+      en: {
+        "title": "Yiyuan Secondhand · A new secondhand trading community",
+        "nav.features": "Features",
+        "nav.flow": "How it works",
+        "nav.contact": "Contact",
+        "nav.open": "Open the bot",
+        "nav.menu": "Open menu",
+        "hero.eyebrow": "Telegram secondhand marketplace",
+        "hero.title": "Welcome to<br>Yiyuan",
+        "hero.lead": "A new secondhand trading community. List, search, order, escrow, shipping checks, reviews, and disputes — all inside the bot.",
+        "hero.cta": "Open @yyrsbot",
+        "hero.secondary": "See how a trade works",
+        "hero.meta1": "BEP-20 escrow payments",
+        "hero.meta2t": "Physical / digital goods",
+        "hero.meta2": "Listed after review",
+        "hero.meta3t": "Global logistics checks",
+        "hero.meta3": "Tracking verification for physical orders",
+        "strip.buy.t": "Buyer hub",
+        "strip.buy.p": "Search, purchases, incoming, favorites, and complaints.",
+        "strip.sale.t": "Seller hub",
+        "strip.sale.p": "Listings, drafts, to-ship, sold, and disputes.",
+        "strip.self.t": "Profile",
+        "strip.self.p": "Homepage, shipping address, and USDT payout address.",
+        "strip.help.t": "Help",
+        "strip.help.p": "Rules and platform guides, anytime.",
+        "feat.title": "Buy and sell in Telegram",
+        "feat.lead": "No extra app. Join the required channels, then use buyer, seller, and profile tools. Browse by site or search all listings.",
+        "feat.1.t": "Reviewed before it goes live",
+        "feat.1.p": "Physical and digital goods. Sellers add title, price, stock, description, and media; physical items also need condition. Listings appear on the matching site only after review.",
+        "feat.2.t": "One-time address escrow",
+        "feat.2.p": "Pay the exact USDT amount to the BSC address shown on the order. Funds are held and released by order status; settlement and refunds wait for on-chain confirmation.",
+        "feat.3.t": "Shipping and logistics checks",
+        "feat.3.p": "Physical orders verify real carrier tracking and destination before shipping proof unlocks. Digital goods are delivered as agreed, with no logistics.",
+        "flow.title": "How a trade is completed",
+        "flow.lead": "From browsing to reviews, the steps are fixed and visible. Off-platform address or amount changes are not covered.",
+        "flow.1.t": "Browse / list",
+        "flow.1.p": "Search by site or across the market; sellers submit items for review.",
+        "flow.2.t": "Order & escrow",
+        "flow.2.p": "A one-time address is created; pay the shown BNB Chain USDT amount.",
+        "flow.3.t": "Ship & verify",
+        "flow.3.p": "Sellers ship on time and upload proof; physical orders get tracking checks.",
+        "flow.4.t": "Confirm receipt",
+        "flow.4.p": "Buyer confirmation pays the seller; overdue receipt follows platform rules.",
+        "flow.5.t": "Reviews / disputes",
+        "flow.5.p": "Both sides review; disputes need evidence within the deadline and are decided by the rules.",
+        "cta.title": "Open the bot now",
+        "cta.p": "Search on Telegram or tap the button to start trading with the official Yiyuan bot.",
+        "contact.title": "Get in touch",
+        "contact.email": "Official email",
+        "contact.email.p": "This is the platform’s official email. Do not trust anyone claiming to be support who asks for seed phrases, private keys, or off-platform payments.",
+        "contact.bot": "Official bot",
+        "contact.bot.p": "The only official entry:",
+        "footer.note": "Funds and after-sales follow the published platform rules. Keep copies of important confirmations."
+      },
+      zh: {
+        "title": "一元二手 · 全新的二手交易社区",
+        "nav.features": "功能",
+        "nav.flow": "交易流程",
+        "nav.contact": "联系我们",
+        "nav.open": "打开机器人",
+        "nav.menu": "打开菜单",
+        "hero.eyebrow": "Telegram 二手交易社区",
+        "hero.title": "欢迎来到<br>一元二手",
+        "hero.lead": "这是一个全新的二手交易社区。发布、搜索、下单、托管收款、发货核验、互评与纠纷，都在机器人里完成。",
+        "hero.cta": "进入 @yyrsbot",
+        "hero.secondary": "了解交易流程",
+        "hero.meta1": "BEP-20 托管收款",
+        "hero.meta2t": "实体 / 虚拟商品",
+        "hero.meta2": "审核后上架",
+        "hero.meta3t": "全球物流核验",
+        "hero.meta3": "实体发货轨迹核对",
+        "strip.buy.t": "买家中心",
+        "strip.buy.p": "搜索、已购、待收货、收藏与投诉。",
+        "strip.sale.t": "卖家中心",
+        "strip.sale.p": "发布、草稿、待发货、已售与纠纷。",
+        "strip.self.t": "个人中心",
+        "strip.self.p": "主页、收货地址与 USDT 收款地址。",
+        "strip.help.t": "帮助中心",
+        "strip.help.p": "规则与平台说明随时可查。",
+        "feat.title": "在 Telegram 完成买卖",
+        "feat.lead": "不另外下载 App。加入所需频道后即可使用买家、卖家与个人功能，按站点浏览或全站搜索在售商品。",
+        "feat.1.t": "发布审核后再上架",
+        "feat.1.p": "支持实体类与虚拟类商品。卖家填写标题、价格、库存、描述与图文；实体商品还需说明新旧程度。通过审核后进入对应站点展示，避免未审内容直接流入市场。",
+        "feat.2.t": "一次性地址托管",
+        "feat.2.p": "买家只向订单页显示的 BSC 地址支付精确 USDT 金额。资金按订单状态托管与释放，结算与退款走链上回执。",
+        "feat.3.t": "发货与物流核对",
+        "feat.3.p": "实体订单核验真实承运轨迹与收货地区后，才开放发货凭证。虚拟商品按约定方式交付，无需物流。",
+        "flow.title": "一笔交易怎么走完",
+        "flow.lead": "从浏览到互评，流程固定、状态可查。私下改地址、改金额或离开平台交易，平台无法保障。",
+        "flow.1.t": "浏览 / 发布",
+        "flow.1.p": "按站点或全站搜索；卖家提交商品等待审核。",
+        "flow.2.t": "下单托管",
+        "flow.2.p": "生成一次性收款地址，按显示金额支付 BNB Chain USDT。",
+        "flow.3.t": "发货核验",
+        "flow.3.p": "卖家按时发货并提交凭证；实体单核验物流轨迹。",
+        "flow.4.t": "确认收货",
+        "flow.4.p": "买家确认后结算给卖家；超时未收可按规则处理。",
+        "flow.5.t": "互评 / 纠纷",
+        "flow.5.p": "双方互评；争议需在时限内举证，由平台按规则裁决。",
+        "cta.title": "现在就打开机器人",
+        "cta.p": "在 Telegram 搜索或点击下方按钮，进入一元二手官方机器人开始买卖。",
+        "contact.title": "联系官方",
+        "contact.email": "官方邮箱",
+        "contact.email.p": "这是平台官方邮箱。请勿相信任何自称客服并索要助记词、私钥，或要求站外转账的人。",
+        "contact.bot": "官方机器人",
+        "contact.bot.p": "唯一官方入口：",
+        "footer.note": "资金与售后按平台公示规则执行，关键确认请自行导出留存。"
+      }
+    };
+
+    function setLang(lang) {
+      const dict = I18N[lang] || I18N.en;
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      document.title = dict.title;
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+      document.querySelectorAll("[data-i18n-html]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-html");
+        if (dict[key]) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-aria");
+        if (dict[key]) el.setAttribute("aria-label", dict[key]);
+      });
+      document.querySelectorAll(".lang-switch button").forEach((btn) => {
+        btn.classList.toggle("active", btn.getAttribute("data-lang") === lang);
+      });
+      try { localStorage.setItem("yyrs-lang", lang); } catch (e) {}
+    }
+
+    document.querySelectorAll(".lang-switch button").forEach((btn) => {
+      btn.addEventListener("click", () => setLang(btn.getAttribute("data-lang")));
+    });
+
+    let initial = "en";
+    try {
+      const saved = localStorage.getItem("yyrs-lang");
+      if (saved === "zh" || saved === "en") initial = saved;
+    } catch (e) {}
+    setLang(initial);
+  </script>
+</body>
+</html>
