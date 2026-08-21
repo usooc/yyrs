@@ -151,10 +151,10 @@
 
     .hero {
       display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 56px;
+      grid-template-columns: 1fr auto;
+      gap: 28px;
       align-items: center;
-      padding: 72px 0 48px;
+      padding: 40px 0 28px;
     }
     .eyebrow {
       display: inline-flex;
@@ -171,10 +171,11 @@
     }
     h1 {
       font-family: "Noto Serif SC", serif;
-      font-size: clamp(40px, 6vw, 68px);
-      line-height: 1.12;
+      font-size: clamp(26px, 3.2vw, 36px);
+      line-height: 1.3;
       letter-spacing: 0.02em;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
+      white-space: nowrap;
     }
     .lead {
       font-size: 18px;
@@ -193,7 +194,7 @@
     .meta b { display: block; color: var(--ink); font-size: 15px; }
 
     .hero-logo {
-      width: min(420px, 100%);
+      width: 180px;
       margin-left: auto;
       display: grid;
       place-items: center;
@@ -319,6 +320,73 @@
       flex-wrap: wrap;
     }
 
+    .faq-list {
+      display: grid;
+      gap: 10px;
+    }
+    .faq-item {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(90, 70, 20, 0.04);
+    }
+    .faq-item[open] {
+      background: linear-gradient(180deg, #fffaf0, #fff);
+    }
+    .faq-item summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 22px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 16px;
+      user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker,
+    .faq-item summary::marker { display: none; content: ""; }
+    .faq-item summary:hover { color: #1f1a10; }
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff8df;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      line-height: 1;
+      color: var(--gold-deep);
+      transition: transform .22s ease, background .22s ease;
+    }
+    .faq-item[open] .faq-chevron {
+      transform: rotate(180deg);
+      background: var(--yellow);
+    }
+    .faq-a {
+      padding: 0 22px 20px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .faq-a p { margin-bottom: 10px; }
+    .faq-a p:last-child { margin-bottom: 0; }
+    .faq-a ul, .faq-a ol {
+      margin: 4px 0 12px 1.15em;
+    }
+    .faq-a li { margin: 4px 0; }
+    .faq-a .warn {
+      color: #8a4a12;
+      background: #fff4d6;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+    }
+
     @media (max-width: 900px) {
       .nav-links { display: none; }
       .nav-links.open {
@@ -335,9 +403,12 @@
       .menu-btn { display: grid; place-items: center; }
       .hero, .features, .contact-grid, .cta { grid-template-columns: 1fr; }
       .strip, .steps { grid-template-columns: 1fr 1fr; }
-      .hero-logo { margin: 0 auto; }
+      .hero-logo { width: 140px; margin: 0 auto; }
       .cta { padding: 28px 22px; }
-      .hero { padding-top: 36px; }
+      .hero { padding-top: 28px; }
+      h1 { white-space: nowrap; font-size: 26px; }
+      .faq-item summary { padding: 16px 16px; font-size: 15px; }
+      .faq-a { padding: 0 16px 16px; }
     }
     @media (max-width: 560px) {
       .strip, .steps { grid-template-columns: 1fr; }
@@ -356,6 +427,7 @@
         <nav class="nav-links" id="nav-links">
           <a href="#features" data-i18n="nav.features">Features</a>
           <a href="#flow" data-i18n="nav.flow">How it works</a>
+          <a href="#faq" data-i18n="nav.faq">FAQ</a>
           <a href="#contact" data-i18n="nav.contact">Contact</a>
           <a class="btn btn-gold" href="https://t.me/yyrsbot" target="_blank" rel="noopener" data-i18n="nav.open">Open the bot</a>
         </nav>
@@ -372,7 +444,7 @@
     <div class="wrap hero">
       <div>
         <div class="eyebrow" data-i18n="hero.eyebrow">Telegram secondhand marketplace</div>
-        <h1 data-i18n-html="hero.title">Welcome to<br>Yiyuan</h1>
+        <h1 data-i18n="hero.title">Welcome to Yiyuan</h1>
         <p class="lead" data-i18n="hero.lead">A new secondhand trading community. List, search, order, escrow, shipping checks, reviews, and disputes — all inside the bot.</p>
         <div class="hero-actions">
           <a class="btn btn-gold" href="https://t.me/yyrsbot" target="_blank" rel="noopener" data-i18n="hero.cta">Open @yyrsbot</a>
@@ -438,6 +510,108 @@
       </div>
     </section>
 
+    <section id="faq">
+      <div class="wrap">
+        <p class="section-kicker">FAQ</p>
+        <h2 data-i18n="faq.title">Frequently asked questions</h2>
+        <p class="section-lead" data-i18n="faq.lead">Payments, escrow, fees, listing links, declining a trade, and privacy — tap a question to expand.</p>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.1.q">How do I pay?</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.1.a">
+              <p>The platform uses USDT as the only payment method.</p>
+              <p>Network: BNB Chain (BSC / BEP20)</p>
+              <p class="warn">⚠️ Network, token, and amount must all be correct. Losses from any mistake cannot be recovered. The payer bears the loss; the platform and sellers are not responsible.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.2.q">How does the platform handle rule-breaking users?</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.2.a">
+              <p>Anyone attempting fraud, improper profit, or other abuse on this platform faces zero tolerance.</p>
+              <p>Once verified, we will:</p>
+              <ul>
+                <li>Permanently ban the account and provide no further service</li>
+                <li>Automatically clear all related data</li>
+                <li>Leave any resulting loss to be borne by the user</li>
+              </ul>
+              <p>The platform serves users with genuine needs. A healthy trading environment is maintained by the whole Yiyuan community.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.3.q">I paid, but the seller says they didn’t receive the money</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.3.a">
+              <p>To protect both sides, buyer payments are held in escrow on the platform.</p>
+              <p>Funds are released to the seller only after the seller actually ships, and the buyer confirms the goods are valid and received.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.4.q">The amount I received from a sale looks wrong</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.4.a">
+              <p>Each sale includes a platform service fee covering buyer/seller protection, on-chain fees, and operating costs.</p>
+              <p>Current fee: 5% (minimum 1.2 USDT).</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.5.q">How can I help buyers order my item faster?</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.5.a">
+              <ol>
+                <li>Recommended: go to Seller hub → On sale, long-press the title (or right-click on desktop) to copy the link, then send it to the buyer.</li>
+                <li>Go to Seller hub → On sale, tap the item number, then Copy link. The link is copied automatically; send it to the buyer.</li>
+                <li>In the item’s site channel, forward the listing message or copy that message’s link. Check carefully so you don’t send someone else’s item.</li>
+              </ol>
+              <p>💡 Method 1 has the fewest steps and is least likely to send the wrong item.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.6.q">A buyer paid, but I don’t want to trade</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.6.a">
+              <p>If you have concerns about the buyer’s reputation, stock, or other reasons, you may decline the trade.</p>
+              <p>After the payment notice, tap Decline trade. The buyer’s payment is refunded automatically, and no order record is created.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.7.q">What trading methods does the platform support?</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.7.a">
+              <p>The platform does not restrict how buyers and sellers trade, but we only protect trades completed inside the platform.</p>
+              <p>Private / off-platform trades are not covered, and they create no order record here.</p>
+            </div>
+          </details>
+          <details class="faq-item">
+            <summary>
+              <span data-i18n="faq.8.q">Is my information safe on the platform?</span>
+              <span class="faq-chevron" aria-hidden="true">▼</span>
+            </summary>
+            <div class="faq-a" data-i18n-html="faq.8.a">
+              <p>📌 If you have used the platform and have trade records, some information remains — especially phone numbers and shipping addresses.</p>
+              <p>There is no system entry to query or export user data. Even admins cannot view private user data in normal operations. Only during a dispute can relevant information be seen for handling.</p>
+              <p>🔒 We store it, but we cannot use it.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <section>
       <div class="wrap">
         <div class="cta">
@@ -483,11 +657,12 @@
         "title": "Yiyuan Secondhand · A new secondhand trading community",
         "nav.features": "Features",
         "nav.flow": "How it works",
+        "nav.faq": "FAQ",
         "nav.contact": "Contact",
         "nav.open": "Open the bot",
         "nav.menu": "Open menu",
         "hero.eyebrow": "Telegram secondhand marketplace",
-        "hero.title": "Welcome to<br>Yiyuan",
+        "hero.title": "Welcome to Yiyuan",
         "hero.lead": "A new secondhand trading community. List, search, order, escrow, shipping checks, reviews, and disputes — all inside the bot.",
         "hero.cta": "Open @yyrsbot",
         "hero.secondary": "See how a trade works",
@@ -524,6 +699,24 @@
         "flow.4.p": "Buyer confirmation pays the seller; overdue receipt follows platform rules.",
         "flow.5.t": "Reviews / disputes",
         "flow.5.p": "Both sides review; disputes need evidence within the deadline and are decided by the rules.",
+        "faq.title": "Frequently asked questions",
+        "faq.lead": "Payments, escrow, fees, listing links, declining a trade, and privacy — tap a question to expand.",
+        "faq.1.q": "How do I pay?",
+        "faq.1.a": "<p>The platform uses USDT as the only payment method.</p><p>Network: BNB Chain (BSC / BEP20)</p><p class=\"warn\">⚠️ Network, token, and amount must all be correct. Losses from any mistake cannot be recovered. The payer bears the loss; the platform and sellers are not responsible.</p>",
+        "faq.2.q": "How does the platform handle rule-breaking users?",
+        "faq.2.a": "<p>Anyone attempting fraud, improper profit, or other abuse on this platform faces zero tolerance.</p><p>Once verified, we will:</p><ul><li>Permanently ban the account and provide no further service</li><li>Automatically clear all related data</li><li>Leave any resulting loss to be borne by the user</li></ul><p>The platform serves users with genuine needs. A healthy trading environment is maintained by the whole Yiyuan community.</p>",
+        "faq.3.q": "I paid, but the seller says they didn’t receive the money",
+        "faq.3.a": "<p>To protect both sides, buyer payments are held in escrow on the platform.</p><p>Funds are released to the seller only after the seller actually ships, and the buyer confirms the goods are valid and received.</p>",
+        "faq.4.q": "The amount I received from a sale looks wrong",
+        "faq.4.a": "<p>Each sale includes a platform service fee covering buyer/seller protection, on-chain fees, and operating costs.</p><p>Current fee: 5% (minimum 1.2 USDT).</p>",
+        "faq.5.q": "How can I help buyers order my item faster?",
+        "faq.5.a": "<ol><li>Recommended: go to Seller hub → On sale, long-press the title (or right-click on desktop) to copy the link, then send it to the buyer.</li><li>Go to Seller hub → On sale, tap the item number, then Copy link. The link is copied automatically; send it to the buyer.</li><li>In the item’s site channel, forward the listing message or copy that message’s link. Check carefully so you don’t send someone else’s item.</li></ol><p>💡 Method 1 has the fewest steps and is least likely to send the wrong item.</p>",
+        "faq.6.q": "A buyer paid, but I don’t want to trade",
+        "faq.6.a": "<p>If you have concerns about the buyer’s reputation, stock, or other reasons, you may decline the trade.</p><p>After the payment notice, tap Decline trade. The buyer’s payment is refunded automatically, and no order record is created.</p>",
+        "faq.7.q": "What trading methods does the platform support?",
+        "faq.7.a": "<p>The platform does not restrict how buyers and sellers trade, but we only protect trades completed inside the platform.</p><p>Private / off-platform trades are not covered, and they create no order record here.</p>",
+        "faq.8.q": "Is my information safe on the platform?",
+        "faq.8.a": "<p>📌 If you have used the platform and have trade records, some information remains — especially phone numbers and shipping addresses.</p><p>There is no system entry to query or export user data. Even admins cannot view private user data in normal operations. Only during a dispute can relevant information be seen for handling.</p><p>🔒 We store it, but we cannot use it.</p>",
         "cta.title": "Open the bot now",
         "cta.p": "Search on Telegram or tap the button to start trading with the official Yiyuan bot.",
         "contact.title": "Get in touch",
@@ -537,11 +730,12 @@
         "title": "一元二手 · 全新的二手交易社区",
         "nav.features": "功能",
         "nav.flow": "交易流程",
+        "nav.faq": "常见问题",
         "nav.contact": "联系我们",
         "nav.open": "打开机器人",
         "nav.menu": "打开菜单",
         "hero.eyebrow": "Telegram 二手交易社区",
-        "hero.title": "欢迎来到<br>一元二手",
+        "hero.title": "欢迎来到一元二手",
         "hero.lead": "这是一个全新的二手交易社区。发布、搜索、下单、托管收款、发货核验、互评与纠纷，都在机器人里完成。",
         "hero.cta": "进入 @yyrsbot",
         "hero.secondary": "了解交易流程",
@@ -578,6 +772,24 @@
         "flow.4.p": "买家确认后结算给卖家；超时未收可按规则处理。",
         "flow.5.t": "互评 / 纠纷",
         "flow.5.p": "双方互评；争议需在时限内举证，由平台按规则裁决。",
+        "faq.title": "常见问题",
+        "faq.lead": "支付、托管、服务费、商品链接、拒绝交易与信息安全，点开问题即可查看说明。",
+        "faq.1.q": "支付说明",
+        "faq.1.a": "<p>平台使用 USDT 作为唯一的支付方式。</p><p>支付网络：BNB Chain（BSC / BEP20）</p><p class=\"warn\">⚠️ 必须注意的是，支付时网络、币种、金额必须准确。任何一项错误导致的损失都无法找回，相关损失由支付方自行承担，与平台、卖家无关。</p>",
+        "faq.2.q": "平台如何处理违规用户",
+        "faq.2.a": "<p>任何企图以非正常手段在本平台欺诈、牟利或其他行为的用户，我们持「0 容忍」态度。</p><p>一旦核实成功，我们将：</p><ul><li>永久封禁，不再提供任何服务</li><li>所有数据自动清空</li><li>所造成的损失自行承担</li></ul><p>本平台只服务于真正有需求的用户，良好的交易环境由一元二手社区所有用户共同维护。</p>",
+        "faq.3.q": "付款后我没有收到款项",
+        "faq.3.a": "<p>为保证买卖双方的合法交易权益，买家所支付的款项托管在平台内。</p><p>只有当卖家真实发货、买家确认商品真实有效并确认收货后，款项才会打款至卖家。</p>",
+        "faq.4.q": "出售商品收到的金额不对",
+        "faq.4.a": "<p>每个商品售出时，平台收取一定的费用作为综合服务费，该费用包含：保护买卖双方、链上手续费、运营成本等各种服务费。</p><p>目前费用金额：5%（最低 1.2 USDT）。</p>",
+        "faq.5.q": "如何让买家更快速下单我的商品",
+        "faq.5.a": "<ol><li>推荐：进入「卖家中心 → 在售商品」，长按商品标题复制链接，或在电脑上右键点击商品标题复制链接，再发送给买家。</li><li>进入「卖家中心 → 在售商品」，点击商品序号，再点击「复制链接」，链接会自动复制，随后发送给买家即可。</li><li>进入商品所在站点，将商品消息直接转发给买家，或复制该消息的链接。操作前请仔细核对，避免误发了不是自己的商品。</li></ol><p>💡 推荐使用第 1 种方式，步骤最少，也不容易发错商品。</p>",
+        "faq.6.q": "买家付款后我不想交易了",
+        "faq.6.a": "<p>别担心。若因为买家信誉、商品库存或其他因素，卖家拥有拒绝交易的权利。</p><p>收到付款通知后，点击拒绝交易即可。拒绝后，买家支付的款项会自动退回，也不会产生任何交易记录。</p>",
+        "faq.7.q": "平台有什么交易方式",
+        "faq.7.a": "<p>平台不限制买卖双方的交易方式，但我们仅保障在平台内部交易的用户。</p><p>若选择私下交易，所发生的任何事与本平台无关，亦不会在本平台产生任何订单记录。</p>",
+        "faq.8.q": "我在平台的信息安全",
+        "faq.8.a": "<p>📌 只要你使用过本平台并且有过交易记录，就会在本平台留下你的信息，特别是手机号、收货地址等隐私信息，这是毋庸置疑的。</p><p>但是，我们没有对系统预留或设计可调用、可导出用户数据的任何入口。就连平台管理员在正常情况下都无法查看任何用户的隐私信息，只有当发生交易纠纷时，才能看到并用做纠纷处理参考。</p><p>🔒 所以对于用户信息安全：我们有，但无法使用。</p>",
         "cta.title": "现在就打开机器人",
         "cta.p": "在 Telegram 搜索或点击下方按钮，进入一元二手官方机器人开始买卖。",
         "contact.title": "联系官方",
